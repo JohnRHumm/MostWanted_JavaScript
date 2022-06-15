@@ -58,6 +58,7 @@ function mainMenu(person, people) {
         // Restarts app() from the very beginning
         return app(people);
     }
+    // ! Make this promptFor to validate the type of info the user is searching for person information
     let displayOption = prompt(
         `Found ${person[0].firstName} ${person[0].lastName}. Do you want to know their 'info', 'family', or 'descendants'?\nType the option you want or type 'restart' or 'quit'.`
     );
@@ -87,6 +88,9 @@ function mainMenu(person, people) {
             break;
         case "quit":
             // Stop application execution
+            return;
+        case "tryit":
+            // Will use to test the code for determining siblings
             return;
         default:
             // Prompt user again. Another instance of recursion
@@ -140,6 +144,13 @@ function displayPeople(people) {
 function displayPerson(person) {
     let personInfo = `First Name: ${person.firstName}\n`;
     personInfo += `Last Name: ${person.lastName}\n`;
+    personInfo += `Gender: ${person.gender}\n`;
+    personInfo += `DOB: ${person.dob}\n`;
+    personInfo += `Height (in): ${person.height}\n`;
+    personInfo += `Weight (lbs): ${person.weight}\n`;
+    personInfo += `Eye Color: ${person.eyeColor}\n`;
+    personInfo += `Occupantion: ${person.occupation}`;
+    
     //! TODO #1a: finish getting the rest of the information to display //////////////////////////////////////////
     alert(personInfo);
 }
