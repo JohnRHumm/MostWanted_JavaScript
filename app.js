@@ -74,8 +74,9 @@ function mainMenu(person, people) {
         case "f": //Family
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
+			// Done
             let personFamily = findPersonFamily(person[0], people);
-            alert(personFamily);
+            displayPeople(personFamily);
             break;
         case "d": //Descendants
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
@@ -103,7 +104,7 @@ function mainMenu(person, people) {
 /**
  * This function is used when searching the people collection by
  * a person-object's firstName and lastName properties.
- * @param {Array} people        A collection of person objects.
+ * @param {Array} people        A collection of person objects.
  * @returns {Array}             An array containing the person-object (or empty array if no match)
  */
 function searchByName(people) {
@@ -213,11 +214,17 @@ function chars(input) {
 /**
  * JHumm
  * This function will return all the people in a person's family
- * @param {Object} person       A singular object.
+ * @param {Object} personOfInterst       A singular object. Looking for this person's family
  * @param {Array} people        A collection of person objects.
  * @returns {string}           A string of everyone in the person's family
  */
- function findPersonFamily(person,people) {
-    return input.toLowerCase() === "i" || input.toLowerCase() === "f" || input.toLowerCase() === "d"  || input.toLowerCase() === "t";
+ function findPersonFamily(personOfInterest,people) {
+    let family = people.filter(function (person) {
+        if (person.lastName === personOfInterest.lastName && person.id != personOfInterest.id) {
+            return true;
+        }
+	})
+	
+	return family;
 }
-// End of personInformationSearchType()
+// End findPersonFamily()
