@@ -59,41 +59,42 @@ function mainMenu(person, people) {
         return app(people);
     }
     // ! Make this promptFor to validate the type of info the user is searching for person information
-    let displayOption = prompt(
-        `Found ${person[0].firstName} ${person[0].lastName}. Do you want to know their 'info', 'family', or 'descendants'?\nType the option you want or type 'restart' or 'quit'.`
+    let messageToUser = "Found " + person[0].firstName + " " + person[0].lastName + "\n";
+    messageToUser += "Type 'I' for (I)nfo, 'F' for (F)amily, 'D' for (D)escendants, 'R' for (R)estart, or 'Q' for (Q)uit";
+    let displayOption = promptFor(
+        messageToUser,
+        personInformationSearchType
     );
     // Routes our application based on the user's input
     switch (displayOption) {
-        case "info":
-            //! TODO #1: Utilize the displayPerson function //////////////////////////////////////////
-            // HINT: Look for a person-object stringifier utility function to help
+        case "i": 'Info'
             let personInfo = displayPerson(person[0]);
             alert(personInfo);
             break;
-        case "family":
+        case "f": //Family
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
             let personFamily = findPersonFamily(person[0], people);
             alert(personFamily);
             break;
-        case "descendants":
+        case "d": //Descendants
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
             let personDescendants = findPersonDescendants(person[0], people);
             alert(personDescendants);
             break;
-        case "restart":
+        case "r": //Restart
             // Restart app() from the very beginning
             app(people);
             break;
-        case "quit":
+        case "q": //Quit
             // Stop application execution
             return;
-        case "tryit":
-            // Will use to test the code for determining siblings
+        case "t": //Try it
+            // Will use to test the code for determining siblings - JHumm
             return;
         default:
-            // Prompt user again. Another instance of recursion
+            // Prompt user again. Another instance of recursion 
             return mainMenu(person, people);
     }
 }
@@ -152,7 +153,8 @@ function displayPerson(person) {
     personInfo += `Occupantion: ${person.occupation}`;
     
     //! TODO #1a: finish getting the rest of the information to display //////////////////////////////////////////
-    alert(personInfo);
+    // Done JHumm //
+    return(personInfo);
 }
 // End of displayPerson()
 
@@ -195,3 +197,15 @@ function chars(input) {
 
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
+
+/**
+ * JHumm
+ * This helper function limits the users input to 'I' for (I)nfo, 'F' for (F)amily,
+ *  'D' for (D)escendants, 'R' for (R)estart, or 'Q' for (Q)uit
+ * @param {String} input        A string of one letter corresponding to the first letter of the desired action.
+ * @returns {Boolean}           The result of our condition evaluation.
+ */
+ function  personInformationSearchType(input) {
+    return input.toLowerCase() === "i" || input.toLowerCase() === "f" || input.toLowerCase() === "d"  || input.toLowerCase() === "t";
+}
+// End of personInformationSearchType()
