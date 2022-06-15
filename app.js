@@ -58,7 +58,7 @@ function mainMenu(person, people) {
         // Restarts app() from the very beginning
         return app(people);
     }
-    // ! Make this promptFor to validate the type of info the user is searching for person information
+    // ! Added promptFor to validate the type of info the user is searching for person information
     let messageToUser = "Found " + person[0].firstName + " " + person[0].lastName + "\n";
     messageToUser += "Type 'I' for (I)nfo, 'F' for (F)amily, 'D' for (D)escendants, 'R' for (R)estart, or 'Q' for (Q)uit";
     let displayOption = promptFor(
@@ -205,7 +205,19 @@ function chars(input) {
  * @param {String} input        A string of one letter corresponding to the first letter of the desired action.
  * @returns {Boolean}           The result of our condition evaluation.
  */
- function  personInformationSearchType(input) {
+ function personInformationSearchType(input) {
+    return input.toLowerCase() === "i" || input.toLowerCase() === "f" || input.toLowerCase() === "d"  || input.toLowerCase() === "t";
+}
+// End of personInformationSearchType()
+
+/**
+ * JHumm
+ * This function will return all the people in a person's family
+ * @param {Object} person       A singular object.
+ * @param {Array} people        A collection of person objects.
+ * @returns {string}           A string of everyone in the person's family
+ */
+ function findPersonFamily(person,people) {
     return input.toLowerCase() === "i" || input.toLowerCase() === "f" || input.toLowerCase() === "d"  || input.toLowerCase() === "t";
 }
 // End of personInformationSearchType()
