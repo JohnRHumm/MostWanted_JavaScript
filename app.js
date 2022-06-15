@@ -74,15 +74,16 @@ function mainMenu(person, people) {
         case "f": //Family
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
-			// Done
+			// Done
             let personFamily = findPersonFamily(person[0], people);
             displayPeople(personFamily);
             break;
         case "d": //Descendants
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
+			// Done
             let personDescendants = findPersonDescendants(person[0], people);
-            alert(personDescendants);
+            displayPeople(personDescendants);
             break;
         case "r": //Restart
             // Restart app() from the very beginning
@@ -104,7 +105,7 @@ function mainMenu(person, people) {
 /**
  * This function is used when searching the people collection by
  * a person-object's firstName and lastName properties.
- * @param {Array} people        A collection of person objects.
+ * @param {Array} people        A collection of person objects.
  * @returns {Array}             An array containing the person-object (or empty array if no match)
  */
 function searchByName(people) {
@@ -214,7 +215,7 @@ function chars(input) {
 /**
  * JHumm
  * This function will return all the people in a person's family
- * @param {Object} personOfInterst       A singular object. Looking for this person's family
+ * @param {Object} personOfInterest       A singular object. Looking for this person's family
  * @param {Array} people        A collection of person objects.
  * @returns {string}           A string of everyone in the person's family
  */
@@ -228,3 +229,35 @@ function chars(input) {
 	return family;
 }
 // End findPersonFamily()
+
+/**
+ * JHumm
+ * This function will return all the descendants from the selected person
+ * @param {Object} personOfInterest       A singular object. Looking for all the descendents in this person's family
+ * @param {Array} people        A collection of person objects.
+ * @returns {string}           A string personofInterest's descendants
+ */
+ function findPersonDescendants(personOfInterest,people,family = []) {
+	let descendant = people.filter(function(person)  {
+		for (let i = 0; i<person.parents.length; i++){
+			if (person.parents[i] === personOfInterest.id) {
+				return true;
+			}
+		}
+	})
+     
+	if (descendant.length === 0) {
+		return family;
+	} else{
+		
+		for (let i = 0 ; i<descendant.length ; i++) {
+			family.push(descendant[i]);
+			findPersonDescendants(descendant[i],people,family);
+		}
+	}
+	
+	return family;
+	
+	
+}
+// End findPersonDescendants()
