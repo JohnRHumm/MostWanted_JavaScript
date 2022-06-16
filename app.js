@@ -31,7 +31,8 @@ function app(people) {
         case "no":
             //! TODO #4: Declare a searchByTraits (multiple traits) function //////////////////////////////////////////
                 //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
-            searchResults = searchByTraits(people);
+			let traits = ['First name','Last name','Gender','Birth year','Height','Weight','Eye color','Occupation'];
+            searchResults = searchByTraits(people,traits);
             break;
         default:
             // Re-initializes the app() if neither case was hit above. This is an instance of recursion.
@@ -261,3 +262,32 @@ function chars(input) {
 	
 }
 // End findPersonDescendants()
+
+/**
+ * JHumm
+ * This function allow user to search for person using multiple traits
+ * @param {Object} personOfInterest       A singular object. Looking for all the descendents in this person's family
+ * @param {Array} people        A collection of person objects.
+ * @returns {string}           A string personofInterest's descendants
+ */
+ function searchByTraits(people,traits) {
+	 
+	 let question = 'Please select from the following list of attributes to find your person \n';
+	 for (let i = 0; i<traits.length ; i++) {
+		 question += traits[i];
+		 question += "\n";
+	 }
+	 question += 'Done';
+	 userSelection = prompt(question);
+	 
+	 switch(userSelection){
+		 case "First name":
+			firstName = prompt('Enter first name');
+			subGroup = people.filter
+	 }
+	 
+	 
+	 
+	 
+ }
+ 
