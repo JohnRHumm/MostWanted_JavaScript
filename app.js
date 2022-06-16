@@ -31,7 +31,7 @@ function app(people) {
         case "no":
             //! TODO #4: Declare a searchByTraits (multiple traits) function //////////////////////////////////////////
                 //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
-			let traits = ['First name','Last name','Gender','Birth year','Height','Weight','Eye color','Occupation'];
+			let traits = ['First name','Last name','Gender','DOB','Height','Weight','Eye color','Occupation'];
             searchResults = searchByTraits(people,traits);
             break;
         default:
@@ -266,7 +266,7 @@ function chars(input) {
  * @param {list} traits        A list of selectable traits 
  * @returns {string}           A string personofInterest's descendants
  */
- function searchByTraits(people,traits) {
+ function searchByTraits(people,traits,personOfInterest) {
 	 
     let messageToUser = makeTraitList(traits);
 	let userIntSelection = promptInt(messageToUser,traits.length);
@@ -279,9 +279,43 @@ function chars(input) {
 		 
 	switch(trait){
 	    case "First name":
-		    let firstName = prompt('Enter first name');
-		    //subGroup = people.filter
+		    personOfInterest = findByTrait(people,'firstName',prompt('Enter first name'));
+			break;
+		case "Last name":
+			personOfInterest = findByTrait(people,'lastName',prompt('Enter last name'));
+			break;
+		case "Gender":
+			personOfInterest = findByTrait(people,'gender',prompt('Enter gender'));
+			break;
+		case "DOB":
+			personOfInterest = findByTrait(people,'dob',prompt('Enter Date of Birth'));
+			break;
+		case "Height":
+			personOfInterest = findByTrait(people,'height',prompt('Enter height'));
+			break;
+		case "Weight":
+			personOfInterest = findByTrait(people,'weight',prompt('Enter weight'));
+			break;
+		case "Eye color":
+			personOfInterest = findByTrait(people,'eyeColor',prompt('Enter eye color'));
+			break;
+		case "Occupantion":
+			personOfInterest = findByTrait(people,'occupation',prompt('Enter occupation'));
+			break;
+		case "Done":
+			break;
+		
+	
 	}
+	if(personOfInterest.length <= 1){
+			mainMenu(personOfInterest, people)
+	} else
+		let message = 'You have found ' + personOfInterest + "people. Do you want to refine your search Yes/No"
+		let userChoice = promptFor(message, yesNo);
+		if (userChoice === 'yes'){
+				traits.pop(userIntSelection);
+				
+		}
  }
  // End searchByTraits()
  
@@ -327,15 +361,27 @@ function chars(input) {
  * JHumm
  * This helper function limits the users input an integer from 1 to list length. The 0 position is
  * instructions to the user
- * @param {String} input        A string of one letter corresponding to the first letter of the desired action.
+ * @param {String} choice       The user selected choice
+ * @param {int} choice       	The lenght of the list
  * @returns {Boolean}           The result of our condition evaluation.
  */
  function intCheck(choice,endInt) {
 	 
-	if (choice > 1 && choice <= endInt) {
+	if (choice > 0 && choice <= endInt) {
 		return true;
 	}
 }
 
 // End of intCheck()
+
+function findByTrait(people,trait,value) {
+        // The foundPerson value will be of type Array. Recall that .filter() ALWAYS returns an array.
+    let foundPerson = people.filter(function (person) {
+        if (person[trait].toString() === value) {
+            return true;
+        }
+    });
+    return foundPerson;
+}
+// End of searchByName()
 
