@@ -309,13 +309,15 @@ function chars(input) {
 	}
 	if(personOfInterest.length <= 1){
 			mainMenu(personOfInterest, people)
-	} else
-		let message = 'You have found ' + personOfInterest + "people. Do you want to refine your search Yes/No"
-		let userChoice = promptFor(message, yesNo);
+	} else{
+		let message = 'You have found ' + personOfInterest.length + "people. Do you want to refine your search Yes/No";
+		let userChoice = promptFor(message, yesNo).toLowerCase();
 		if (userChoice === 'yes'){
-				traits.pop(userIntSelection);
+				traits.splice(userIntSelection,1);
+				searchByTraits(personOfInterest,traits);
 				
 		}
+	}	
  }
  // End searchByTraits()
  
