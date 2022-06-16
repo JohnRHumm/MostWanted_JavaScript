@@ -246,8 +246,7 @@ function chars(input) {
 			}
 		}
 	})
-     
-	if (descendant.length === 0) {
+ 	if (descendant.length === 0) {
 		return family;
 	} else{
 		
@@ -256,10 +255,7 @@ function chars(input) {
 			findPersonDescendants(descendant[i],people,family);
 		}
 	}
-	
 	return family;
-	
-	
 }
 // End findPersonDescendants()
 
@@ -273,15 +269,18 @@ function chars(input) {
  function searchByTraits(people,traits) {
 	 
     let messageToUser = makeTraitList(traits);
-	let userSelection = promptFor(
-        messageToUser,
-        integerSelection
-    );
-	 
-	switch(userSelection){
+	let userIntSelection = promptInt(messageToUser,traits.length);
+	let trait = '';
+	if (userIntSelection === traits.length){
+		trait = 'Done';
+	} else {
+		trait = traits[userIntSelection];
+	}
+		 
+	switch(trait){
 	    case "First name":
-		    firstName = prompt('Enter first name');
-		    subGroup = people.filter
+		    let firstName = prompt('Enter first name');
+		    //subGroup = people.filter
 	}
  }
  // End searchByTraits()
@@ -298,7 +297,45 @@ function chars(input) {
     for (let i = 0; i<traits.length ; i++) {
 	    question += (i+1).toString() + '. ' + traits[i] + '\n';
     }
-    question += 'Done';
+    question += (traits.length+1).toString() + '. ' +'Done';
     return question;
 
 }
+
+// End makeTraitList()
+
+/**
+ * JHumm
+ * This helper function limits prompts user with an integer (and text) based list. Will return the 
+ *  index to the list (selected number - 1)
+ * @param {String} prompMessage     A string containing instructions to the user
+ * @param {int} endInt       		Integer of the last element in the list
+ * @returns {int}           		Index number in the list
+ */
+ function promptInt(promptMessage,endInt) {
+	 
+	do {
+		var response = prompt(promptMessage);
+	} while (!response || !intCheck(response,endInt+1));
+	
+	return response-1;
+}
+
+// End of promptInt()
+
+/**
+ * JHumm
+ * This helper function limits the users input an integer from 1 to list length. The 0 position is
+ * instructions to the user
+ * @param {String} input        A string of one letter corresponding to the first letter of the desired action.
+ * @returns {Boolean}           The result of our condition evaluation.
+ */
+ function intCheck(choice,endInt) {
+	 
+	if (choice > 1 && choice <= endInt) {
+		return true;
+	}
+}
+
+// End of intCheck()
+
