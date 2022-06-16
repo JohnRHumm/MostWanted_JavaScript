@@ -33,6 +33,7 @@ function app(people) {
                 //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
 			let traits = ['First name','Last name','Gender','DOB','Height','Weight','Eye color','Occupation'];
             searchResults = searchByTraits(people,traits);
+			displayPeople(searchResults);
             break;
         default:
             // Re-initializes the app() if neither case was hit above. This is an instance of recursion.
@@ -92,9 +93,6 @@ function mainMenu(person, people) {
             break;
         case "q": //Quit
             // Stop application execution
-            return;
-        case "t": //Try it
-            // Will use to test the code for determining siblings - JHumm
             return;
         default:
             // Prompt user again. Another instance of recursion 
@@ -209,7 +207,8 @@ function chars(input) {
  * @returns {Boolean}           The result of our condition evaluation.
  */
  function personInformationSearchType(input) {
-    return input.toLowerCase() === "i" || input.toLowerCase() === "f" || input.toLowerCase() === "d"  || input.toLowerCase() === "t";
+    return input.toLowerCase() === "i" || input.toLowerCase() === "f" || input.toLowerCase() === "d"  || 
+		input.toLowerCase() === "r" || input.toLowerCase() === "q"; 
 }
 // End of personInformationSearchType()
 
@@ -299,25 +298,29 @@ function chars(input) {
 		case "Eye color":
 			personOfInterest = findByTrait(people,'eyeColor',prompt('Enter eye color'));
 			break;
-		case "Occupantion":
+		case "Occupation":
 			personOfInterest = findByTrait(people,'occupation',prompt('Enter occupation'));
 			break;
 		case "Done":
+			return personOfInterest;
 			break;
 		
 	
 	}
 	if(personOfInterest.length <= 1){
-			mainMenu(personOfInterest, people)
-	} else{
-		let message = 'You have found ' + personOfInterest.length + "people. Do you want to refine your search Yes/No";
+		return(personOfInterest);
+	} else {
+		let message = 'You have found ' + personOfInterest.length + " people. Do you want to refine your search Yes/No";
 		let userChoice = promptFor(message, yesNo).toLowerCase();
 		if (userChoice === 'yes'){
 				traits.splice(userIntSelection,1);
-				searchByTraits(personOfInterest,traits);
-				
+				personOfInterest = searchByTraits(personOfInterest,traits);
+		} else {
+			let message = 'You have found ' + personOfInterest.length + " people. By quitting the search, the first person will be automatically selected";
+			alert(message);
 		}
-	}	
+	}
+	return(personOfInterest);
  }
  // End searchByTraits()
  
@@ -385,5 +388,5 @@ function findByTrait(people,trait,value) {
     });
     return foundPerson;
 }
-// End of searchByName()
+// findByTrait()
 
