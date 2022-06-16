@@ -266,28 +266,39 @@ function chars(input) {
 /**
  * JHumm
  * This function allow user to search for person using multiple traits
- * @param {Object} personOfInterest       A singular object. Looking for all the descendents in this person's family
- * @param {Array} people        A collection of person objects.
+ * @param {Array} people       A collection of person objects.
+ * @param {list} traits        A list of selectable traits 
  * @returns {string}           A string personofInterest's descendants
  */
  function searchByTraits(people,traits) {
 	 
-	 let question = 'Please select from the following list of attributes to find your person \n';
-	 for (let i = 0; i<traits.length ; i++) {
-		 question += traits[i];
-		 question += "\n";
-	 }
-	 question += 'Done';
-	 userSelection = prompt(question);
+    let messageToUser = makeTraitList(traits);
+	let userSelection = promptFor(
+        messageToUser,
+        integerSelection
+    );
 	 
-	 switch(userSelection){
-		 case "First name":
-			firstName = prompt('Enter first name');
-			subGroup = people.filter
-	 }
-	 
-	 
-	 
-	 
+	switch(userSelection){
+	    case "First name":
+		    firstName = prompt('Enter first name');
+		    subGroup = people.filter
+	}
  }
+ // End searchByTraits()
  
+/**
+ * JHumm
+ * This function reutrns a numbered list from list of traits
+ * @param {Object} personOfInterest       A singular object. Looking for all the descendents in this person's family
+ * @param {Array} people        A collection of person objects.
+ * @returns {string}           A string personofInterest's descendants
+ */
+ function makeTraitList(traits) {
+    let question = 'Please select the corresponing NUMBER from the following list of attributes to find your person \n';
+    for (let i = 0; i<traits.length ; i++) {
+	    question += (i+1).toString() + '. ' + traits[i] + '\n';
+    }
+    question += 'Done';
+    return question;
+
+}
