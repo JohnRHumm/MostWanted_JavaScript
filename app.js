@@ -205,9 +205,9 @@ function chars(input) {
 /**
  * JHumm
  * This function will return all the people in a person's family
- * @param {Object} personOfInterest       A singular object. Looking for this person's family
- * @param {Array} people        A collection of person objects.
- * @returns {string}           A string of everyone in the person's family
+ * @param {Object} personOfInterest     A singular object. Looking for this person's family
+ * @param {Array} people        		A collection of person objects.
+ * @returns {string}           			A string of the immediate family's firstname lastname and relationship
  */
  function findPersonFamily(personOfInterest,people) {
     let family = personOfInterest.firstName + " " + personOfInterest.lastName + "'s immediate family:\n";
@@ -219,19 +219,16 @@ function chars(input) {
 			}
 		}
 	}
-	
-	
-	
 	return family;
 }
-// End findPersonFamily()
+// End of findPersonFamily()
 
 /**
  * JHumm
  * This function will return all the descendants from the selected person
- * @param {Object} personOfInterest       A singular object. Looking for all the descendents in this person's family
- * @param {Array} people        A collection of person objects.
- * @returns {string}           A string personofInterest's descendants
+ * @param {Object} personOfInterest     A singular object. Looking for all the descendents in this person's family
+ * @param {Array} people        		A collection of person objects.
+ * @returns {string}           			A string personofInterest's descendants
  */
  function findPersonDescendants(personOfInterest,people,family = []) {
 	let descendant = people.filter(function(person)  {
@@ -251,7 +248,7 @@ function chars(input) {
 	}
 	return family;
 }
-// End findPersonDescendants()
+// End of findPersonDescendants()
 
 /**
  * JHumm
@@ -300,9 +297,8 @@ function chars(input) {
 		case "Done":
 			return personOfInterest;
 			break;
-		
-	
 	}
+	
 	if(personOfInterest.length <= 1){
 		return(personOfInterest);
 	} else {
@@ -319,14 +315,13 @@ function chars(input) {
 	}
 	return(personOfInterest);
  }
- // End searchByTraits()
+ // End of searchByTraits()
  
 /**
  * JHumm
  * This function reutrns a numbered list from list of traits
- * @param {Object} personOfInterest       A singular object. Looking for all the descendents in this person's family
- * @param {Array} people        A collection of person objects.
- * @returns {string}           A string personofInterest's descendants
+ * @param {Array} traits       A list of traits for searching
+ * @returns {string}           A numbered list with instructions to user at top and Done at the bottom
  */
  function makeTraitList(traits) {
     let question = 'Please select the corresponing NUMBER from the following list of attributes to find your person \n';
@@ -337,53 +332,68 @@ function chars(input) {
     return question;
 
 }
-// End makeTraitList()
+// End of makeTraitList()
 
 /**
  * JHumm
  * This helper function limits prompts user with an integer (and text) based list. Will return the 
- *  index to the list (selected number - 1)
+ * index to the list (selected number - 1)
  * @param {String} prompMessage     A string containing instructions to the user
  * @param {int} endInt       		Integer of the last element in the list
  * @returns {int}           		Index number in the list
  */
  function promptInt(promptMessage,endInt) {
-	 
 	do {
 		var response = prompt(promptMessage);
-	} while (!response || !intCheck(response,endInt+1));
+	} while (!response || !intCheck(response,1,endInt+1));
 	
 	return response-1;
 }
-
 // End of promptInt()
 
 /**
  * JHumm
- * This helper function limits the users input an integer from 1 to list length. The 0 position is
+ * This helper function limits the users input an integer as specified by the suer. The 0 position is
  * instructions to the user
  * @param {String} choice       The user selected choice
- * @param {int} choice       	The length of the list
+ * @param {int} startInt       	The upper range of valid integer
+  * @param {int} endInt       	The lower range of valid integer
  * @returns {Boolean}           The result of our condition evaluation.
  */
- function intCheck(choice,endInt) {
-	 
-	if (choice > 0 && choice <= endInt) {
+ function intCheck(choice,startInt, endInt) {
+	if (choice >= startInt && choice <= endInt) {
 		return true;
 	}
 }
-
 // End of intCheck()
 
-function findByTrait(people,trait,value) {
+/**
+ * JHumm
+ * This helper function compares stored trait of a collection of people to a searchable trait
+ * and returns true if the values are equal
+ * @param {Array} people       	A collection of person objects.
+ * @param {list} trait       	A list of traits that are variables in people objects
+ * @param {String} searchTrait  This is the user entered search trait
+ * @returns {Boolean}           The result of our condition evaluation.
+ */
+function findByTrait(people,trait,searchTrait) {
     let foundPerson = people.filter(function (person) {
-        if (person[trait].toString() === value) {
+        if (person[trait].toString() === searchTrait) {
             return true;
         }
     });
     return foundPerson;
 }
-// findByTrait()
+// End of findByTrait()
+
+/**
+ * JHumm
+ * This function determines the relationship between two person objects. Returns None if no
+ * relationship or a string indicating how the two are related
+ * @param {Object} person       	A person object. Determining the relationship to this person
+ * @param {Object} relative       	A person object. Determining the relationship of relative to the person
+ * @returns {Boolean}           	Returns string of the relationship. "None" if the two are not related.
+ */
 
 function brotherSisterParentSpouseChild(person,relative){
 	let immediateFamily = 'None';
@@ -441,3 +451,4 @@ function brotherSisterParentSpouseChild(person,relative){
 	return immediateFamily
 }	
 
+// End of brotherSisterParentSpouseChild()
