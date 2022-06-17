@@ -5,6 +5,7 @@
 //////////////////////////////////////////* Beginning Of Starter Code *//////////////////////////////////////////
 
 "use strict";
+
 //? Utilize the hotkey to hide block level comment documentation
 ////* Mac: Press "CMD"+"K" and then "CMD"+"/"
 ////* PC: Press "CTRL"+"K" and then "CTRL"+"/"
@@ -29,9 +30,7 @@ function app(people) {
             searchResults = searchByName(people);
             break;
         case "no":
-            //! TODO #4: Declare a searchByTraits (multiple traits) function //////////////////////////////////////////
-                //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
-			let traits = ['First name','Last name','Gender','DOB','Height','Weight','Eye color','Occupation'];
+            let traits = ['First name','Last name','Gender','DOB','Height','Weight','Eye color','Occupation'];
             searchResults = searchByTraits(people,traits);
 			displayPeople(searchResults);
             break;
@@ -74,16 +73,10 @@ function mainMenu(person, people) {
             alert(personInfo);
             break;
         case "f": //Family
-            //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
-            // HINT: Look for a people-collection stringifier utility function to help
-			// Done
             let personFamily = findPersonFamily(person[0], people);
-            displayPeople(personFamily);
+            alert(personFamily);
             break;
         case "d": //Descendants
-            //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
-            // HINT: Review recursion lecture + demo for bonus user story
-			// Done
             let personDescendants = findPersonDescendants(person[0], people);
             displayPeople(personDescendants);
             break;
@@ -152,9 +145,6 @@ function displayPerson(person) {
     personInfo += `Weight (lbs): ${person.weight}\n`;
     personInfo += `Eye Color: ${person.eyeColor}\n`;
     personInfo += `Occupantion: ${person.occupation}`;
-    
-    //! TODO #1a: finish getting the rest of the information to display //////////////////////////////////////////
-    // Done JHumm //
     return(personInfo);
 }
 // End of displayPerson()
@@ -220,11 +210,17 @@ function chars(input) {
  * @returns {string}           A string of everyone in the person's family
  */
  function findPersonFamily(personOfInterest,people) {
-    let family = people.filter(function (person) {
-        if (person.lastName === personOfInterest.lastName && person.id != personOfInterest.id) {
-            return true;
-        }
-	})
+    let family = personOfInterest.firstName + " " + personOfInterest.lastName + "'s immediate family:\n";
+	for (let i=0;i<people.length;i++) {
+		if(people[i].id != personOfInterest.id){
+			let relative = brotherSisterParentSpouseChild(personOfInterest,people[i]);
+			if(relative != 'None'){
+				family += people[i].firstName + " " + people[i].lastName + " --> " + relative + "\n";
+			}
+		}
+	}
+	
+	
 	
 	return family;
 }
@@ -247,8 +243,7 @@ function chars(input) {
 	})
  	if (descendant.length === 0) {
 		return family;
-	} else{
-		
+	} else {
 		for (let i = 0 ; i<descendant.length ; i++) {
 			family.push(descendant[i]);
 			findPersonDescendants(descendant[i],people,family);
@@ -261,9 +256,10 @@ function chars(input) {
 /**
  * JHumm
  * This function allow user to search for person using multiple traits
- * @param {Array} people       A collection of person objects.
- * @param {list} traits        A list of selectable traits 
- * @returns {string}           A string personofInterest's descendants
+ * @param {Array} people       		A collection of person objects.
+ * @param {list} traits        		A list of selectable traits 
+ * @param {Array personOfInterest   A collection of filtered person objects
+ * @returns {string}           		A string of the personofInterest's descendants
  */
  function searchByTraits(people,traits,personOfInterest) {
 	 
@@ -310,6 +306,7 @@ function chars(input) {
 	if(personOfInterest.length <= 1){
 		return(personOfInterest);
 	} else {
+		displayPeople(personOfInterest);
 		let message = 'You have found ' + personOfInterest.length + " people. Do you want to refine your search Yes/No";
 		let userChoice = promptFor(message, yesNo).toLowerCase();
 		if (userChoice === 'yes'){
@@ -340,7 +337,6 @@ function chars(input) {
     return question;
 
 }
-
 // End makeTraitList()
 
 /**
@@ -367,7 +363,7 @@ function chars(input) {
  * This helper function limits the users input an integer from 1 to list length. The 0 position is
  * instructions to the user
  * @param {String} choice       The user selected choice
- * @param {int} choice       	The lenght of the list
+ * @param {int} choice       	The length of the list
  * @returns {Boolean}           The result of our condition evaluation.
  */
  function intCheck(choice,endInt) {
@@ -380,7 +376,6 @@ function chars(input) {
 // End of intCheck()
 
 function findByTrait(people,trait,value) {
-        // The foundPerson value will be of type Array. Recall that .filter() ALWAYS returns an array.
     let foundPerson = people.filter(function (person) {
         if (person[trait].toString() === value) {
             return true;
@@ -389,4 +384,60 @@ function findByTrait(people,trait,value) {
     return foundPerson;
 }
 // findByTrait()
+
+function brotherSisterParentSpouseChild(person,relative){
+	let immediateFamily = 'None';
+	// brother or sister
+	let numMatchedParents = 0;
+	for (let i=0;i<person.parents.length;i++){
+		for (let j=0;j<relative.parents.length;j++){
+			if(person.parents[i] === relative.parents[j]) {
+				numMatchedParents += 1;
+			}
+		}	
+	}
+	if (numMatchedParents === 1 && relative.gender === 'female'){
+		immediateFamily = 'Half-sister';
+	}
+	if (numMatchedParents === 2 && relative.gender === 'female'){
+		immediateFamily = 'Sister';
+	}
+	if (numMatchedParents === 1 && relative.gender === 'male'){
+		immediateFamily = 'Half-brother';
+	}
+	if (numMatchedParents === 2 && relative.gender === 'male'){
+		immediateFamily = 'Brother';
+	}
+	// child
+	if (relative.parents.length){
+		if (relative.parents.indexOf(person.id) != -1 && relative.gender === 'female' ){
+			immediateFamily = 'Daughter'
+		}
+		if (relative.parents.indexOf(person.id) != -1 && relative.gender === 'male' ){
+			immediateFamily = 'Son'
+		}
+	}
+	// parent
+	if (person.parents.length){
+		if (person.parents.indexOf(relative.id) != -1 && relative.gender === 'female' ){
+			immediateFamily = 'Mom';
+		}
+		if (person.parents.indexOf(relative.id) != -1  && relative.gender === 'male' ){
+			immediateFamily = 'Dad';
+		}
+	}
+	
+	if (person.currentSpouse.length){
+	
+		if (person.currentSpouse === relative.id && relative.gender === 'female'  ){
+			immediateFamily = 'Wife';
+		}
+		if (person.currentSpouse === relative.id && relative.gender === 'male'  ){
+			immediateFamily = 'Husband';
+		}
+	}
+		
+	
+	return immediateFamily
+}	
 
