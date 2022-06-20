@@ -19,11 +19,16 @@
 function app(people) {
     // promptFor() is a custom function defined below that helps us prompt and validate input more easily
     // Note that we are chaining the .toLowerCase() immediately after the promptFor returns its value
-    let searchType = promptFor(
-        "Do you know the name of the person you are looking for? Enter 'yes' or 'no'",
-        yesNo
-    ).toLowerCase();
-    let searchResults;
+    
+	try {
+		var searchType = promptFor(
+		"Do you know the name of the person you are looking for? Enter 'yes' or 'no'",
+		yesNo).toLowerCase();
+	}
+	catch(err) {
+		return;
+	}
+	let searchResults;
     // Routes our application based on the user's input
     switch (searchType) {
         case "yes":
@@ -62,11 +67,15 @@ function mainMenu(person, people) {
     // ! Added promptFor to validate the type of info the user is searching for person information
     let messageToUser = "Found " + person[0].firstName + " " + person[0].lastName + "\n";
     messageToUser += "Type 'I' for (I)nfo, 'F' for (F)amily, 'D' for (D)escendants, 'R' for (R)estart, or 'Q' for (Q)uit";
-    let displayOption = promptFor(
-        messageToUser,
-        personInformationSearchType
-    );
-    // Routes our application based on the user's input
+    try {
+		var displayOption = promptFor(
+			messageToUser,
+			personInformationSearchType);
+	}
+    catch(err) {
+		return;
+	}
+	// Routes our application based on the user's input
     switch (displayOption) {
         case "i": 'Info'
             let personInfo = displayPerson(person[0]);
@@ -102,15 +111,25 @@ function mainMenu(person, people) {
  */
 function searchByName(people) {
     let firstName = promptFor("What is the person's first name?", chars);
-    let lastName = promptFor("What is the person's last name?", chars);
+	let lastName = promptFor("What is the person's last name?", chars);
+	let foundPerson = [];
+	
 
     // The foundPerson value will be of type Array. Recall that .filter() ALWAYS returns an array.
-    let foundPerson = people.filter(function (person) {
-        if (person.firstName === firstName && person.lastName === lastName) {
+    try {
+		foundPerson = people.filter(function (person) {
+        if (person.firstName.toLowerCase() === firstName.toLowerCase() && 
+		person.lastName.toLowerCase() === lastName.toLowerCase()) {
             return true;
         }
     });
-    return foundPerson;
+	}
+	catch(err){
+	    return foundPerson;
+	}
+	
+	return foundPerson;
+	
 }
 // End of searchByName()
 
@@ -159,7 +178,13 @@ function displayPerson(person) {
  */
 function promptFor(question, valid) {
     do {
-        var response = prompt(question).trim();
+        try {
+			var response = prompt(question).trim();
+		}
+		catch (err) {
+			return response;
+		}
+		
     } while (!response || !valid(response));
     return response;
 }
@@ -258,7 +283,7 @@ function chars(input) {
  * @param {Array personOfInterest   A collection of filtered person objects
  * @returns {string}           		A string of the personofInterest's descendants
  */
- function searchByTraits(people,traits,personOfInterest) {
+ function searchByTraits(people,traits,personOfInterest=[]) {
 	 
     let messageToUser = makeTraitList(traits);
 	let userIntSelection = promptInt(messageToUser,traits.length);
@@ -304,7 +329,12 @@ function chars(input) {
 	} else {
 		displayPeople(personOfInterest);
 		let message = 'You have found ' + personOfInterest.length + " people. Do you want to refine your search Yes/No";
-		let userChoice = promptFor(message, yesNo).toLowerCase();
+		try {
+			var userChoice = promptFor(message, yesNo).toLowerCase();
+		}
+		catch {
+			return personOfInterest;
+		}
 		if (userChoice === 'yes'){
 				traits.splice(userIntSelection,1);
 				personOfInterest = searchByTraits(personOfInterest,traits);
@@ -377,12 +407,19 @@ function chars(input) {
  * @returns {Boolean}           The result of our condition evaluation.
  */
 function findByTrait(people,trait,searchTrait) {
-    let foundPerson = people.filter(function (person) {
-        if (person[trait].toString() === searchTrait) {
+    let foundPerson = []
+	try {
+		foundPerson = people.filter(function (person) {
+        if (person[trait].toString().toLowerCase() === searchTrait.toLowerCase()) {
             return true;
         }
     });
-    return foundPerson;
+	}
+	catch(err) {
+		return foundPerson;
+	}
+	
+	return foundPerson;
 }
 // End of findByTrait()
 
